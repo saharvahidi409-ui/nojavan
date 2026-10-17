@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نوجوان | آموزش و آزمون</title>
+<style>
+:root{--bg:#f3f6ff;--card:#fff;--ink:#172554;--muted:#64748b;--blue:#3457d5;--cyan:#06b6d4;--line:#e2e8f0;--green:#16a34a}
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:linear-gradient(135deg,#eef2ff,#ecfeff);color:var(--ink)}
+header{background:linear-gradient(120deg,#172554,#3457d5 60%,#0891b2);color:white;padding:26px 18px 22px}
+.wrap{max-width:1050px;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.logo{font-size:28px;font-weight:900}.tag{opacity:.9;margin-top:6px;font-size:14px}.pill{display:inline-block;padding:7px 12px;border:1px solid #ffffff66;border-radius:999px;font-size:12px}
+main{max-width:1050px;margin:22px auto;padding:0 14px}.notice{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:14px;padding:12px 14px;font-size:13px;line-height:1.9;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 8px 24px #1e3a8a0b}
+h2{font-size:19px;margin:0 0 14px}h3{font-size:16px;margin:0 0 8px}.muted{color:var(--muted);font-size:13px;line-height:1.8}
+input,select,textarea{font:inherit;width:100%;padding:11px 12px;border:1px solid #cbd5e1;border-radius:11px;margin:6px 0 10px;background:#fff;color:var(--ink)}
+button{font:inherit;border:0;border-radius:11px;padding:10px 14px;background:var(--blue);color:white;cursor:pointer;font-weight:bold}button:hover{filter:brightness(.95)}button.secondary{background:#e0e7ff;color:#1e3a8a}button.danger{background:#fee2e2;color:#991b1b}button.green{background:var(--green)}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row>*{flex:1}
+.hidden{display:none!important}.stat{font-size:26px;font-weight:900;color:var(--blue)}.subject{border:1px solid var(--line);border-radius:14px;padding:13px;margin:9px 0;background:#fbfdff}.subject p{margin:6px 0}.badge{font-size:11px;background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:4px 8px}
+#message{margin:10px 0;font-size:13px;color:#166534;line-height:1.8}.question{border-top:1px solid var(--line);padding:12px 0}.question label{display:block;padding:7px;border-radius:9px;cursor:pointer}.question label:hover{background:#f1f5f9}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:26px 12px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.logo{font-size:24px}}
+</style>
+</head>
+<body>
+<header><div class="wrap top"><div><div class="logo">📘 نوجوان</div><div class="tag">یاد بگیر، تمرین کن، پیشرفت کن!</div></div><div class="pill">آموزش • آزمون • پیشرفت</div></div></header>
+<main>
+<div class="notice"><b>توجه:</b> این نسخهٔ اولیه برای آزمایش و اجرا روی یک مرورگر ساخته شده است. حساب‌ها و اطلاعات فقط روی همین دستگاه ذخیره می‌شوند؛ برای سایت اینترنتی با حساب‌های امن و مدیریت واقعی، باید آن را روی هاست و به پایگاه داده متصل کنیم.</div>
+<section id="auth" class="grid">
+<div class="card"><h2>🔐 ورود</h2><input id="loginUser" placeholder="نام کاربری"><input id="loginPass" type="password" placeholder="رمز عبور"><button onclick="login()">ورود به نوجوان</button><div class="muted" style="margin-top:10px">حساب مدیر اولیه: <b>owner</b> / <b>nojavan123</b></div></div>
+<div class="card"><h2>🎓 ثبت‌نام دانش‌آموز</h2><input id="regName" placeholder="نام و نام خانوادگی"><input id="regUser" placeholder="نام کاربری دلخواه"><input id="regPass" type="password" placeholder="رمز عبور"><button class="green" onclick="register()">ساخت حساب دانش‌آموز</button><div class="muted">نام کاربری باید یکتا باشد.</div></div>
+<div class="card"><h2>✨ امکانات</h2><p class="muted">📚 درس‌های نمونه پایه هفتم</p><p class="muted">📝 آزمون کوتاه و دیدن نمره</p><p class="muted">👑 بخش مدیریت برای صاحب سایت</p><p class="muted">📊 ثبت نتیجه‌ها در همین مرورگر</p></div>
+</section>
+<section id="dashboard" class="hidden">
+<div class="card" style="margin-bottom:14px"><div class="top"><div><h2 id="welcome">خوش آمدی!</h2><div id="roleText" class="muted"></div></div><div class="row" style="flex:0 1 auto"><button class="secondary" onclick="showStudent()">بخش دانش‌آموزی</button><button id="adminTab" class="secondary hidden" onclick="showAdmin()">مدیریت سایت</button><button class="danger" onclick="logout()">خروج</button></div></div></div>
+<section id="studentArea" class="grid">
+<div class="card"><h2>📚 درس‌ها</h2><div class="subject"><h3>ریاضی هفتم: عددهای صحیح</h3><p class="muted">عددهای مثبت از صفر بزرگ‌تر و عددهای منفی از صفر کوچک‌ترند. برای مثال، ۳ از ۱ بزرگ‌تر است و ۲- از ۵- بزرگ‌تر است.</p></div><div class="subject"><h3>علوم هفتم: اندازه‌گیری</h3><p class="muted">برای اندازه‌گیری از کمیت، یکا و ابزار مناسب استفاده می‌کنیم. طول را با متر، زمان را با ثانیه و جرم را با کیلوگرم بیان می‌کنیم.</p></div><div class="subject"><h3>فارسی هفتم: درک مطلب</h3><p class="muted">هنگام خواندن متن، به موضوع اصلی و پیام نویسنده توجه کن و پاسخ را با جمله‌ای روشن بنویس.</p></div></div>
+<div class="card"><h2>📝 آزمون نمونه</h2><div id="quiz"></div><button onclick="submitQuiz()">ثبت پاسخ و دیدن نمره</button><div id="quizResult"></div></div>
+<div class="card"><h2>📈 کارنامه من</h2><div class="stat" id="myScore">۰</div><div class="muted">آخرین نمره از ۳</div><hr style="border:0;border-top:1px solid var(--line);margin:14px 0"><div id="myHistory" class="muted">هنوز آزمونی نداده‌ای.</div></div>
+</section>
+<section id="adminArea" class="hidden">
+<div class="grid">
+<div class="card"><h2>👑 مدیریت نوجوان</h2><p class="muted">از این بخش می‌توانی دانش‌آموزهای ثبت‌شده روی همین دستگاه را ببینی و یک اعلان عمومی اضافه کنی.</p><div class="stat" id="studentCount">۰</div><div class="muted">حساب‌های دانش‌آموزی</div></div>
+<div class="card"><h2>📣 اعلان سایت</h2><textarea id="announcementInput" rows="3" placeholder="پیام برای دانش‌آموزها..."></textarea><button onclick="saveAnnouncement()">انتشار اعلان</button><p id="announcementStatus" class="muted"></p></div>
+<div class="card"><h2>💾 پشتیبان‌گیری</h2><p class="muted">اطلاعات این نسخه در مرورگر ذخیره می‌شود. هر چند وقت یک‌بار از آن خروجی بگیر.</p><button onclick="exportData()">دانلود پشتیبان JSON</button><input type="file" id="importFile" accept=".json" onchange="importData(event)"><button class="secondary" onclick="document.getElementById('importFile').click()">بازیابی پشتیبان</button></div>
+</div>
+<div class="card" style="margin-top:14px"><h2>👥 دانش‌آموزان ثبت‌شده</h2><div id="studentList" class="muted"></div></div>
+</section>
+</section>
+<div id="message"></div>
+</main>
+<footer>نوجوان © نسخهٔ اولیه — برای انتشار عمومی، اتصال امن و میزبانی لازم است.</footer>
+<script>
+const KEY='nojavan_demo_v1';
+let data=JSON.parse(localStorage.getItem(KEY)||'null');
+if(!data){data={users:[{username:'owner',password:'nojavan123',name:'صاحب سایت',role:'admin',scores:[]}],announcement:''};save();}
+let current=null;
+const fa=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function msg(t){document.getElementById('message').textContent=t}
+function register(){
+ const name=document.getElementById('regName').value.trim(),u=document.getElementById('regUser').value.trim(),p=document.getElementById('regPass').value;
+ if(!name||!u||!p){msg('همهٔ فیلدهای ثبت‌نام را پر کن.');return}
+ if(u.toLowerCase()==='owner'||data.users.some(x=>x.username.toLowerCase()===u.toLowerCase())){msg('این نام کاربری قبلاً استفاده شده است.');return}
+ data.users.push({username:u,password:p,name,role:'student',scores:[]});save();msg('حساب دانش‌آموز ساخته شد؛ حالا وارد شو.');
+ document.getElementById('loginUser').value=u;document.getElementById('loginPass').value=p;
+}
+function login(){
+ const u=document.getElementById('loginUser').value.trim(),p=document.getElementById('loginPass').value;
+ const found=data.users.find(x=>x.username===u&&x.password===p);
+ if(!found){msg('نام کاربری یا رمز عبور درست نیست.');return}
+ current=found;document.getElementById('auth').classList.add('hidden');document.getElementById('dashboard').classList.remove('hidden');
+ document.getElementById('welcome').textContent='سلام '+current.name+'! 👋';
+ document.getElementById('roleText').textContent=current.role==='admin'?'حساب مدیر + دانش‌آموز':'حساب دانش‌آموز';
+ document.getElementById('adminTab').classList.toggle('hidden',current.role!=='admin');
+ document.getElementById('announcementStatus').textContent=data.announcement?'اعلان فعلی: '+data.announcement:'';
+ renderQuiz();renderScores();showStudent();if(current.role==='admin')renderAdmin();msg('');
+}
+function logout(){current=null;document.getElementById('dashboard').classList.add('hidden');document.getElementById('auth').classList.remove('hidden');msg('از حساب خارج شدی.')}
+function showStudent(){document.getElementById('studentArea').classList.remove('hidden');document.getElementById('adminArea').classList.add('hidden')}
+function showAdmin(){if(!current||current.role!=='admin')return;document.getElementById('studentArea').classList.add('hidden');document.getElementById('adminArea').classList.remove('hidden');renderAdmin()}
+const qs=[
+ {q:'حاصل ۳ + (۲-) کدام است؟',a:['۱','۵','۱-'],correct:0},
+ {q:'یکای اصلی اندازه‌گیری زمان کدام است؟',a:['متر','ثانیه','کیلوگرم'],correct:1},
+ {q:'کدام عدد از ۵- بزرگ‌تر است؟',a:['۷-','۶-','۳-'],correct:2}
+];
+function renderQuiz(){document.getElementById('quiz').innerHTML=qs.map((q,i)=>`<div class="question"><b>${fa(i+1)}. ${q.q}</b>${q.a.map((a,j)=>`<label><input style="width:auto;margin:0 0 0 6px" type="radio" name="q${i}" value="${j}"> ${a}</label>`).join('')}</div>`).join('')}
+function submitQuiz(){if(!current){return}let score=0;qs.forEach((q,i)=>{let x=document.querySelector(`input[name="q${i}"]:checked`);if(x&&Number(x.value)===q.correct)score++});current.scores.push({score,total:qs.length,date:new Date().toLocaleDateString('fa-IR')});save();renderScores();document.getElementById('quizResult').innerHTML=`<p><b>نمره تو: ${fa(score)} از ${fa(qs.length)}</b></p><p class="muted">${score===3?'آفرین! همه را درست جواب دادی.':score===2?'خوب بود؛ یک بار دیگر تمرین کن.':'اشکالی ندارد؛ درس‌ها را مرور کن و دوباره امتحان بده.'}</p>`;if(current.role==='admin')renderAdmin()}
+function renderScores(){let s=current.scores||[];let last=s[s.length-1];document.getElementById('myScore').textContent=last?fa(last.score)+' / '+fa(last.total):'—';document.getElementById('myHistory').textContent=s.length?s.slice().reverse().map(x=>`${x.date}: ${fa(x.score)} از ${fa(x.total)}`).join(' • '):'هنوز آزمونی نداده‌ای.'}
+function renderAdmin(){document.getElementById('studentCount').textContent=fa(data.users.filter(x=>x.role==='student').length);document.getElementById('studentList').innerHTML=data.users.filter(x=>x.role==='student').map(x=>`<div class="subject"><b>${esc(x.name)}</b> <span class="badge">${esc(x.username)}</span><p>تعداد آزمون: ${fa((x.scores||[]).length)}</p></div>`).join('')||'هنوز دانش‌آموزی ثبت‌نام نکرده است.';document.getElementById('announcementInput').value=data.announcement||''}
+function saveAnnouncement(){data.announcement=document.getElementById('announcementInput').value.trim();save();document.getElementById('announcementStatus').textContent='اعلان ذخیره شد.';msg('اعلان ذخیره شد.')}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function exportData(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='nojavan-backup.json';a.click();URL.revokeObjectURL(a.href)}
+function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!Array.isArray(d.users))throw Error();data=d;save();msg('پشتیبان بازیابی شد. دوباره وارد شو.');logout()}catch(err){msg('فایل پشتیبان معتبر نیست.')}};r.readAsText(f)}
+</script>
+</body></html>
