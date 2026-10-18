@@ -1,39 +1,187 @@
 <!doctype html>
 <html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>نوجوان | آموزش و آزمون</title>
 <style>
-:root{--ink:#172554;--blue:#3457d5;--line:#e2e8f0;--muted:#64748b}*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial;background:linear-gradient(135deg,#eef2ff,#ecfeff);color:var(--ink)}header{background:linear-gradient(120deg,#172554,#3457d5,#0891b2);color:white;padding:24px 16px}.wrap,main{max-width:1000px;margin:auto}main{padding:18px 12px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{background:white;border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}h2{font-size:19px}input,textarea{font:inherit;width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:10px;margin:6px 0 10px}button{font:inherit;border:0;border-radius:10px;padding:10px 14px;background:var(--blue);color:white;cursor:pointer;font-weight:bold}.green{background:#15803d}.secondary{background:#e0e7ff;color:#1e3a8a}.danger{background:#fee2e2;color:#991b1b}.muted{font-size:13px;color:var(--muted);line-height:1.8}.hidden{display:none!important}.subject{border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0}#message{white-space:pre-wrap;font-size:13px;line-height:1.9}.err{color:#b91c1c}.ok{color:#166534}.row{display:flex;gap:8px;flex-wrap:wrap}@media(max-width:760px){.grid{grid-template-columns:1fr}}
+:root{--ink:#172554;--blue:#3457d5;--line:#e2e8f0;--muted:#64748b}*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial;background:linear-gradient(135deg,#eef2ff,#ecfeff);color:var(--ink)}header{background:linear-gradient(120deg,#172554,#3457d5,#0891b2);color:white;padding:24px 16px}.wrap,main{max-width:1000px;margin:auto}main{padding:18px 12px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{background:white;border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}h2{font-size:19px}input,textarea{font:inherit;width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:10px;margin:6px 0 10px}button{font:inherit;border:0;border-radius:10px;padding:10px 14px;background:var(--blue);color:white;cursor:pointer;font-weight:bold}.green{background:#15803d}.secondary{background:#e0e7ff;color:#1e3a8a}.danger{background:#fee2e2;color:#991b1b}.muted{font-size:13px;color:var(--muted);line-height:1.8}.hidden{display:none!important}.subject{border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0}#message{white-space:pre-wrap;font-size:13px;line-height:1.9;min-height:1.2em}.err{color:#b91c1c}.ok{color:#166534}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}#announceBox{background:#fef9c3;border:1px solid #fde047;border-radius:10px;padding:10px;margin:8px 0;font-size:14px}@media(max-width:760px){.grid{grid-template-columns:1fr}}
 </style></head><body>
 <header><div class="wrap"><h1>📘 نوجوان</h1><div>یاد بگیر، تمرین کن، پیشرفت کن!</div></div></header><main>
-<div class="card muted">این نسخه برای ثبت‌نام اینترنتی است. ابتدا فایل setup.sql را در SQL Editor پروژه Supabase اجرا کن و کلید عمومی را در کد قرار بده. کلید secret یا service_role را هرگز در سایت نگذار.</div>
+
+<div class="card muted">این نسخه برای ثبت‌نام اینترنتی است. ابتدا فایل setup.sql را در SQL Editor پروژه Supabase اجرا کن و کلید <b>anon</b> را در کد قرار بده. کلید secret یا service_role را هرگز در سایت نگذار.</div>
+
 <section id="auth" class="grid">
 <div class="card"><h2>🔐 ورود</h2><input id="loginEmail" type="email" placeholder="ایمیل"><input id="loginPass" type="password" placeholder="رمز عبور"><button id="loginBtn" onclick="login()">ورود</button></div>
 <div class="card"><h2>🎓 ثبت‌نام دانش‌آموز</h2><input id="regName" placeholder="نام و نام خانوادگی"><input id="regUser" placeholder="نام کاربری (حروف انگلیسی/عدد)"><input id="regEmail" type="email" placeholder="ایمیل معتبر"><input id="regPass" type="password" minlength="8" placeholder="رمز عبور، حداقل ۸ نویسه"><button id="regBtn" class="green" onclick="register()">ساخت حساب</button><p class="muted">اگر تأیید ایمیل فعال باشد، ایمیل خود را تأیید کن.</p></div>
 <div class="card"><h2>✨ امکانات</h2><p class="muted">📚 درس‌های نمونه پایه هفتم</p><p class="muted">📝 آزمون و ذخیره نمره</p><p class="muted">👑 پنل مدیر</p><p class="muted">☁️ ذخیره آنلاین حساب‌ها</p></div></section>
-<section id="dash" class="hidden"><div class="card"><div class="row"><h2 id="welcome">خوش آمدی</h2><button class="secondary" onclick="studentView()">بخش دانش‌آموزی</button><button id="adminBtn" class="secondary hidden" onclick="adminView()">مدیریت</button><button class="danger" onclick="logout()">خروج</button></div><div id="role" class="muted"></div></div>
-<div id="studentArea" class="grid"><div class="card"><h2>📚 درس‌ها</h2><div class="subject"><b>ریاضی هفتم: عددهای صحیح</b><p class="muted">عددهای مثبت از صفر بزرگ‌تر و عددهای منفی از صفر کوچک‌ترند.</p></div><div class="subject"><b>علوم هفتم: اندازه‌گیری</b><p class="muted">طول را با متر، زمان را با ثانیه و جرم را با کیلوگرم بیان می‌کنیم.</p></div></div>
-<div class="card"><h2>📝 آزمون نمونه</h2><div id="quiz"></div><button onclick="submitQuiz()">ثبت پاسخ و دیدن نمره</button><div id="result"></div></div><div class="card"><h2>📈 کارنامه من</h2><div id="score">—</div><div id="history" class="muted"></div></div></div>
-<div id="adminArea" class="hidden grid"><div class="card"><h2>👑 مدیریت نوجوان</h2><div>تعداد دانش‌آموزان: <b id="count">—</b></div></div><div class="card"><h2>👥 دانش‌آموزان</h2><div id="students" class="muted"></div></div><div class="card"><h2>📣 اعلان سایت</h2><textarea id="announcement"></textarea><button onclick="saveAnnouncement()">ذخیره اعلان</button><p id="annStatus" class="muted"></p></div></div></section><div id="message" role="status"></div></main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+
+<section id="dash" class="hidden"><div class="card"><div class="row"><h2 id="welcome">خوش آمدی</h2><button class="secondary" onclick="studentView()">بخش دانش‌آموزی</button><button id="adminBtn" class="secondary hidden" onclick="adminView()">مدیریت</button><button class="danger" onclick="logout()">خروج</button></div><div id="role" class="muted"></div><div id="announceBox" class="hidden"></div></div>
+
+<div id="studentArea" class="grid">
+<div class="card"><h2>📚 درس‌ها</h2><div class="subject"><b>ریاضی هفتم: عددهای صحیح</b><p class="muted">عددهای مثبت از صفر بزرگ‌تر و عددهای منفی از صفر کوچک‌ترند.</p></div><div class="subject"><b>علوم هفتم: اندازه‌گیری</b><p class="muted">طول را با متر، زمان را با ثانیه و جرم را با کیلوگرم بیان می‌کنیم.</p></div></div>
+<div class="card"><h2>📝 آزمون نمونه</h2><div id="quiz"></div><button onclick="submitQuiz()">ثبت پاسخ و دیدن نمره</button><div id="result"></div></div>
+<div class="card"><h2>📈 کارنامه من</h2><div id="score">—</div><div id="history" class="muted"></div></div></div><div id="adminArea" class="hidden grid"><div class="card"><h2>👑 مدیریت نوجوان</h2><div>تعداد دانش‌آموزان: <b id="count">—</b></div></div><div class="card"><h2>👥 دانش‌آموزان</h2><div id="students" class="muted"></div></div><div class="card"><h2>📣 اعلان سایت</h2><textarea id="announcement"></textarea><button onclick="saveAnnouncement()">ذخیره اعلان</button><p id="annStatus" class="muted"></p></div></div></section>
+
+<div id="message" role="status"></div></main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
 const URL='https://cqpjndcygowhwyunmyzy.supabase.co';
-const PUBLIC_KEY='sb_publishable_RXcUET6X7Nsh-98S6_WjdQ_6P9AQ_Av
-';// فقط کلید عمومی Publishable/anon
-let db=null,session=null,profile=null;
-const $=x=>document.getElementById(x), fa=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+const PUBLIC_KEY='sb_publishable_RXcUET6X7Nsh-98S6_WjdQ_6P9AQ_Av'; // ⚠️ باید با کلید anon واقعی (eyJ...) جایگزین شود
+let db=null,session=null,profile=null,msgTimer=null;
+const $=x=>document.getElementById(x), fa=n=>String(n??'—').replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
 const questions=[{q:'حاصل ۳ + (۲-) کدام است؟',a:['۱','۵','۱-'],c:0},{q:'یکای زمان کدام است؟',a:['متر','ثانیه','کیلوگرم'],c:1},{q:'کدام عدد از ۵- بزرگ‌تر است؟',a:['۷-','۶-','۳-'],c:2}];
-function message(t,err=false){$('message').textContent=t;$('message').className=err?'err':'ok'}
-function ready(){if(!window.supabase){message('کتابخانه بارگذاری نشد؛ اینترنت را بررسی کن.',true);return false}if(PUBLIC_KEY.includes('PASTE_')){message('هنوز کلید عمومی Supabase داخل فایل وارد نشده؛ طبق راهنما آن را جایگزین کن.',true);return false}if(!db)db=window.supabase.createClient(URL,PUBLIC_KEY);return true}
-async function register(){if(!ready())return;let name=$('regName').value.trim(),username=$('regUser').value.trim(),email=$('regEmail').value.trim(),password=$('regPass').value;if(!name||!username||!email||!password)return message('همهٔ فیلدها را پر کن.',true);if(password.length<8)return message('رمز باید حداقل ۸ نویسه باشد.',true);if(!/^[a-zA-Z0-9_]{3,24}$/.test(username))return message('نام کاربری باید ۳ تا ۲۴ حرف انگلیسی، عدد یا زیرخط باشد.',true);$('regBtn').disabled=true;try{let {data,error}=await db.auth.signUp({email,password,options:{data:{full_name:name,username}}});if(error)throw error;if(data.session){session=data.session;await loadProfile();message('ثبت‌نام انجام شد.')}else message('درخواست ثبت‌نام ثبت شد. اگر تأیید ایمیل فعال است، ایمیل را تأیید کن و بعد وارد شو.')}catch(e){message('ثبت‌نام ناموفق: '+e.message,true)}finally{$('regBtn').disabled=false}}
-async function login(){if(!ready())return;let email=$('loginEmail').value.trim(),password=$('loginPass').value;if(!email||!password)return message('ایمیل و رمز را وارد کن.',true);$('loginBtn').disabled=true;try{let {data,error}=await db.auth.signInWithPassword({email,password});if(error)throw error;session=data.session;await loadProfile();message('ورود موفق بود.')}catch(e){message('ورود ناموفق: '+e.message,true)}finally{$('loginBtn').disabled=false}}
-async function loadProfile(){let {data,error}=await db.from('profiles').select('id,username,full_name,role').eq('id',session.user.id).single();if(error){await db.auth.signOut();session=null;throw Error('پروفایل خوانده نشد؛ setup.sql و سیاست‌های دسترسی را بررسی کن. '+error.message)}profile=data;$('auth').classList.add('hidden');$('dash').classList.remove('hidden');$('welcome').textContent='سلام '+(profile.full_name||profile.username||'دوست نوجوان')+'!';$('role').textContent=profile.role==='admin'?'حساب مدیر':'حساب دانش‌آموز';$('adminBtn').classList.toggle('hidden',profile.role!=='admin');renderQuiz();studentView();await scores();await announcement();if(profile.role==='admin')await renderAdmin()}
-async function logout(){if(db)await db.auth.signOut();session=null;profile=null;$('dash').classList.add('hidden');$('auth').classList.remove('hidden');message('از حساب خارج شدی.')}
-function studentView(){$('studentArea').classList.remove('hidden');$('adminArea').classList.add('hidden')}
-async function adminView(){if(profile?.role!=='admin')return message('دسترسی مدیر لازم است.',true);$('studentArea').classList.add('hidden');$('adminArea').classList.remove('hidden');await renderAdmin()}
-function renderQuiz(){$('quiz').innerHTML=questions.map((q,i)=>`<div class="subject"><b>${fa(i+1)}. ${q.q}</b>${q.a.map((a,j)=>`<label><input type="radio" style="width:auto" name="q${i}" value="${j}"> ${a}</label>`).join('')}</div>`).join('')}
-async function submitQuiz(){let score=0;questions.forEach((q,i)=>{let x=document.querySelector(`input[name="q${i}"]:checked`);if(x&&+x.value===q.c)score++});let {error}=await db.from('quiz_results').insert({user_id:session.user.id,score,total:questions.length});if(error)return message('ثبت نمره ناموفق: '+error.message,true);$('result').textContent='نمره تو: '+fa(score)+' از '+fa(questions.length);await scores()}
-async function scores(){let {data,error}=await db.from('quiz_results').select('score,total,created_at').eq('user_id',session.user.id).order('created_at',{ascending:false}).limit(20);if(error)return message('کارنامه بارگذاری نشد: '+error.message,true);$('score').textContent=data.length?fa(data[0].score)+' از '+fa(data[0].total):'—';$('history').textContent=data.map(x=>new Date(x.created_at).toLocaleDateString('fa-IR')+': '+fa(x.score)+' از '+fa(x.total)).join(' • ')||'هنوز آزمونی نداده‌ای.'}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-async function renderAdmin(){let {data,error}=await db.from('profiles').select('id,username,full_name,role,created_at').eq('role','student').order('created_at',{ascending:false});if(error)return $('students').textContent='فهرست خطا داد: '+error.message;$('count').textContent=fa(data.length);$('students').innerHTML=data.map(x=>`<div class="subject"><b>${esc(x.full_name||'بدون نام')}</b><p class="muted">نام کاربری: ${esc(x.username||'—')}</p></div>`).join('')||'هنوز دانش‌آموزی ثبت‌نام نکرده است.';await announcement()}
-async function announcement(){let {data}=await db.from('site_settings').select('value').eq('key','announcement').maybeSingle();if($('annStatus'))$('annStatus').textContent=data?.value?'اعلان فعلی: '+data.value:'';if($('announcement')&&profile?.role==='admin')$('announcement').value=data?.value||''}
-async function saveAnnouncement(){if(profile?.role!=='admin')return message('دسترسی مدیر لازم است.',true);let {error}=await db.from('site_settings').upsert({key:'announcement',value:$('announcement').value,updated_by:session.user.id});if(error)return message('ذخیره نشد: '+error.message,true);message('اعلان ذخیره شد.')}
-async function init(){if(!ready())return;let {data}=await db.auth.getSession();if(data.session){session=data.session;try{await loadProfile()}catch(e){message(e.message,true)}}db.auth.onAuthStateChange((event)=>{if(event==='SIGNED_OUT'){session=null;profile=null;$('dash').classList.add('hidden');$('auth').classList.remove('hidden')}})}init();
+
+function message(t,err=false,autoClear=false){
+  const el=$('message'); if(!el)return;
+  el.textContent=t||''; el.className=err?'err':(t?'ok':'');
+  clearTimeout(msgTimer);
+  if(autoClear&&t){msgTimer=setTimeout(()=>{el.textContent='';el.className='';},4500);}
+}
+function ready(){
+  if(!window.supabase){message('کتابخانه بارگذاری نشد؛ اینترنت را بررسی کن.',true);return false;}
+  if(!PUBLIC_KEYPUBLIC_KEY.includes('PASTE_')PUBLIC_KEY.startsWith('sb_publishable_')){
+    message('کلید Supabase معتبر نیست. کلید anon پروژه (که با eyJ شروع می‌شود) را جایگزین کن.',true);return false;
+  }
+  if(!db)db=window.supabase.createClient(URL,PUBLIC_KEY);
+  return true;
+}
+
+async function register(){
+  if(!ready())return;
+  const name=$('regName').value.trim(),username=$('regUser').value.trim(),
+        email=$('regEmail').value.trim(),password=$('regPass').value;
+  if(!name!username!email||!password)return message('همهٔ فیلدها را پر کن.',true);
+  if(password.length<8)return message('رمز باید حداقل ۸ نویسه باشد.',true);
+  if(!/^[a-zA-Z0-9_]{3,24}$/.test(username))return message('نام کاربری باید ۳ تا ۲۴ حرف انگلیسی، عدد یا زیرخط باشد.',true);
+  $('regBtn').disabled=true;
+  try{
+    const {data,error}=await db.auth.signUp({email,password,options:{data:{full_name:name,username}}});
+    if(error)throw error;
+    if(data.session){session=data.session;await loadProfile();message('ثبت‌نام انجام شد. خوش آمدی!',false,true);}
+    else message('درخواست ثبت‌نام ثبت شد. اگر تأیید ایمیل فعال است، ایمیل را تأیید کن و بعد وارد شو.',false,true);
+  }catch(e){message('ثبت‌نام ناموفق: '+e.message,true);}
+  finally{$('regBtn').disabled=false;}
+}
+
+async function login(){
+  if(!ready())return;
+  const email=$('loginEmail').value.trim(),password=$('loginPass').value;
+  if(!email||!password)return message('ایمیل و رمز را وارد کن.',true);
+  $('loginBtn').disabled=true;
+  try{
+    const {data,error}=await db.auth.signInWithPassword({email,password});
+    if(error)throw error;
+    session=data.session;await loadProfile();message('ورود موفق بود.',false,true);
+  }catch(e){message('ورود ناموفق: '+e.message,true);}
+  finally{$('loginBtn').disabled=false;}
+}
+
+async function loadProfile(){
+  if(!session?.user?.id)throw Error('نشست معتبر نیست.');
+  const {data,error}=await db.from('profiles').select('id,username,full_name,role').eq('id',session.user.id).single();
+  if(error){
+    await db.auth.signOut();session=null;profile=null;
+    throw Error('پروفایل خوانده نشد؛ setup.sql و سیاست‌های دسترسی (RLS) را بررسی کن. جزئیات: '+error.message);
+  }
+  profile=data;
+  $('auth').classList.add('hidden');$('dash').classList.remove('hidden');
+  $('welcome').textContent='سلام '+(profile.full_nameprofile.username'دوست نوجوان')+'!';
+  $('role').textContent=profile.role==='admin'?'حساب مدیر':'حساب دانش‌آموز';
+  $('adminBtn').classList.toggle('hidden',profile.role!=='admin');
+  renderQuiz();studentView();
+  await Promise.all([scores(),showAnnouncement()]);
+  if(profile.role==='admin')await renderAdmin();
+}async function logout(){
+  try{if(db)await db.auth.signOut();}catch(_){}
+  session=null;profile=null;
+  $('dash').classList.add('hidden');$('auth').classList.remove('hidden');
+  $('announceBox').classList.add('hidden');
+  $('result').textContent='';$('history').textContent='';$('score').textContent='—';
+  message('از حساب خارج شدی.',false,true);
+}
+
+function studentView(){ $('studentArea').classList.remove('hidden'); $('adminArea').classList.add('hidden'); }
+
+async function adminView(){
+  if(profile?.role!=='admin')return message('دسترسی مدیر لازم است.',true);
+  $('studentArea').classList.add('hidden');$('adminArea').classList.remove('hidden');
+  await renderAdmin();
+}
+
+function renderQuiz(){
+  $('quiz').innerHTML=questions.map((q,i)=>
+    <div class="subject"><b>${fa(i+1)}. ${q.q}</b>${q.a.map((a,j)=>
+      <label style="display:block;margin:6px 0;cursor:pointer"><input type="radio" style="width:auto;margin-inline-end:6px" name="q${i}" value="${j}"> ${a}</label>
+    ).join('')}</div>
+  ).join('');
+}
+
+async function submitQuiz(){
+  if(!session?.user?.id)return message('ابتدا وارد شو.',true);
+  let score=0;
+  questions.forEach((q,i)=>{
+    const x=document.querySelector(input[name="q${i}"]:checked);
+    if(x&&+x.value===q.c)score++;
+  });
+  const {error}=await db.from('quiz_results').insert({user_id:session.user.id,score,total:questions.length});
+  if(error)return message('ثبت نمره ناموفق: '+error.message,true);
+  $('result').textContent='نمره تو: '+fa(score)+' از '+fa(questions.length);
+  message('نمره ثبت شد.',false,true);
+  await scores();
+}
+
+async function scores(){
+  if(!session?.user?.id)return;
+  const {data,error}=await db.from('quiz_results')
+    .select('score,total,created_at').eq('user_id',session.user.id)
+    .order('created_at',{ascending:false}).limit(20);
+  if(error)return message('کارنامه بارگذاری نشد: '+error.message,true);
+  const rows=data||[];
+  $('score').textContent=rows.length?fa(rows[0].score)+' از '+fa(rows[0].total):'—';
+  $('history').textContent=rows.map(x=>new Date(x.created_at).toLocaleDateString('fa-IR')+': '+fa(x.score)+' از '+fa(x.total)).join(' • ')||'هنوز آزمونی نداده‌ای.';
+}
+
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+async function renderAdmin(){
+  const {data,error}=await db.from('profiles').select('id,username,full_name,role,created_at').eq('role','student').order('created_at',{ascending:false});
+  if(error)return $('students').textContent='فهرست خطا داد: '+error.message;
+  const rows=data||[];
+  $('count').textContent=fa(rows.length);
+  $('students').innerHTML=rows.map(x=>
+    <div class="subject"><b>${esc(x.full_name'بدون نام')}</b><p class="muted">نام کاربری: ${esc(x.username'—')}</p></div>
+  ).join('')||'هنوز دانش‌آموزی ثبت‌نام نکرده است.';
+  await loadAnnouncementIntoEditor();
+}
+
+async function showAnnouncement(){
+  const {data}=await db.from('site_settings').select('value').eq('key','announcement').maybeSingle();
+  const val=data?.value?.trim();
+  const box=$('announceBox');
+  if(box){ box.textContent=val?('📣 '+val):''; box.classList.toggle('hidden',!val); }
+}
+
+async function loadAnnouncementIntoEditor(){
+  if(profile?.role!=='admin')return;
+  const {data}=await db.from('site_settings').select('value').eq('key','announcement').maybeSingle();
+  $('annStatus').textContent=data?.value?'اعلان فعلی: '+data.value:'';
+  $('announcement').value=data?.value||'';
+}
+
+async function saveAnnouncement(){
+  if(profile?.role!=='admin')return message('دسترسی مدیر لازم است.',true);
+  if(!session?.user?.id)return message('نشست معتبر نیست.',true);
+  const value=$('announcement').value.trim();
+  const {error}=await db.from('site_settings').upsert({key:'announcement',value,updated_by:session.user.id});
+  if(error)return message('ذخیره نشد: '+error.message,true);
+  message('اعلان ذخیره شد.',false,true);
+  await loadAnnouncementIntoEditor();
+  await showAnnouncement();async function init(){
+  if(!ready())return;
+  const {data}=await db.auth.getSession();
+  if(data.session){session=data.session;try{await loadProfile();}catch(e){message(e.message,true);}}
+  db.auth.onAuthStateChange(async (event,newSession)=>{
+    if(event==='SIGNED_OUT'){session=null;profile=null;$('dash').classList.add('hidden');$('auth').classList.remove('hidden');}
+    else if(event==='SIGNED_IN'&&newSession){session=newSession;try{await loadProfile();}catch(e){message(e.message,true);}}
+  });
+}
+init();
 </script></body></html>
